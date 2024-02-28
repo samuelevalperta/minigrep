@@ -12,10 +12,15 @@ impl Config {
         if args.len() < 3 {
             return Err("not enough arguments");
         }
+
         let query = args[1].clone();
         let file_path = args[2].clone();
 
-        let ignore_case = env::var("IGNORE_CASE").is_ok();
+        let ignore_case = if args.len() == 4 && args[3].eq_ignore_ascii_case("insensitive") {
+            true
+        } else {
+            env::var("IGNORE_CASE").is_ok()
+        };
 
         Ok(Config {
             query,
